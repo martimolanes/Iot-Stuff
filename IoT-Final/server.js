@@ -9,39 +9,57 @@ const PORT=6969
 // TODO: try using a time-series database like InfluxDB
 const MONGO_URI="mongodb://root:example@localhost:27017"
 const dbName = 'Weather';
+const TOPIC_NAME = 'weatherData';
 
 // MQTT Broker configuration
-const MQTT_BROKER = 'mqtt://172.20.49.49';
+const MQTT_BROKER = 'mqtt://localhost:1883';
+console.log('Listening to MQTT Broker: ', MQTT_BROKER);
 const mqttClient = mqtt.connect(MQTT_BROKER);
 
+let db;
+
 // Connect to MongoDB
-MongoClient.connect(MONGO_URI).then(client => {
-    console.log('Connected to MongoDB');
-    const db = client.db(dbName);
+const connectToMongoDB = async () => {
+    const client = new MongoClient(MONGO_URI);
+    try {
+        await client.connect();
+        console.log('Connected to MongoDB in: ', MONGO_URI);
+        db = client.db(dbName);
+    } catch (err) {
+        console.error('Failed to connect to MongoDB: ', err);
+    }
+}
 
-    // MQTT subscription
-    mqttClient.on('connect', () => {
-        console.log('Connected to MQTT broker');
-        mqttClient.subscribe('weatherData');
+const subscribeToMQTTTopic = (topic) => {
+    mqttClient.subscribe(topic);
+    console.log('Subscribed to topic: ', topic);
+    mqttClient.on('message', handleMQTTMessage);
+}
+
+const handleMQTTMessage = (topic, message) => {
+    console.log('Received message from topic ', topic + ': ' + message.toString());
+    // TODO: Check message format
+    const weatherData = JSON.parse(message);
+    save(weatherData);
+}
+
+const save = async (weatherData) => {
+    const collection = db.collection('weather');
+    try {
+        await collection.insertOne(weatherData);
+        console.log('Saved to MongoDB: ', weatherData);
+    } catch (err) {
+        console.error('Failed to save to MongoDB: ', err);
+    }
+}
+
+async function init() {
+    await connectToMongoDB();
+    subscribeToMQTTTopic(TOPIC_NAME);
+    // Start the Express server
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
     });
+}
 
-    mqttClient.on('message', (topic, message) => {
-        console.log('Received message from topic:', topic.toString(), message.toString());
-        const data = JSON.parse(message);
-        // Store data in MongoDB
-        db.collection('data').insertOne(data, (err, result) => {
-            if (err) {
-                console.error('Failed to insert data into MongoDB:', err);
-                return;
-            }
-            console.log('Data inserted into MongoDB:', result.ops);
-        });
-    });
-}).catch(err => {
-    console.error('Failed to connect to MongoDB:', err);
-});
-
-// Start the Express server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+init();

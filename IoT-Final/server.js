@@ -1,18 +1,18 @@
-// Import required modules
-const express = require('express');
-const mqtt = require('mqtt');
-const { MongoClient } = require('mongodb');
+import express from 'express';
+import mqtt from 'mqtt';
+import { MongoClient } from 'mongodb';
 
 // Create an Express application
 const app = express();
 
-// MQTT Broker configuration
-const mqttBroker = 'mqtt://172.20.49.49'; // Replace with your MQTT broker address
-const mqttClient = mqtt.connect(mqttBroker);
+const PORT=6969
+const mongoURI="mongodb://root:example@localhost:27017"
 
-// MongoDB configuration
-const mongoURI = 'mongodb+srv://Lawunn:BlackPink1@cluster.1qhaeok.mongodb.net/Weather'; // Replace with your MongoDB connection URI
-const dbName = 'Weather'; // Name of your MongoDB database
+const dbName = 'Weather';
+
+// MQTT Broker configuration
+const mqttBroker = 'mqtt://172.20.49.49';
+const mqttClient = mqtt.connect(mqttBroker);
 
 // Connect to MongoDB
 MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -44,7 +44,6 @@ MongoClient.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true 
     });
 
 // Start the Express server
-const port = 3000; // Port for your web server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

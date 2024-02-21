@@ -6,8 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "db": "sudo docker-compose -f stack.yml up -d",
-    "db:arm": "docker-compose -f stackarm64v8.yml up -d"
+    "mqtt-broker": "sudo docker-compose -f ../docker/mqtt-broker.yml up -d",
+    "db": "sudo docker-compose -f ../docker/mongo.yml up -d",
+    "db:arm": "docker-compose -f ../docker/mongo-arm64v8.yml up -d"
   },
   "keywords": [],
   "author": "",

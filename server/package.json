@@ -5,10 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "mqtt-broker": "sudo docker-compose -f ../docker/mqtt-broker.yml up -d",
-    "db": "sudo docker-compose -f ../docker/mongo.yml up -d",
-    "db:arm": "docker-compose -f ../docker/mongo-arm64v8.yml up -d"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",

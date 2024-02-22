@@ -1,18 +1,59 @@
 # Iot final Project
 
 ## Structure
-##### 1. config-files 
-This folder contains the configuration files for the mqtt-broker.
-##### 2. docker
-This folder contains the docker-compose files to run the mqtt-broker and the database.
+```bash
+.
+├── api
+│   ├── app.js
+│   ├── node_modules
+│   ├── package.json
+│   ├── package-lock.json
+│   └── routes
+├── esp32-firmware
+│   └── weather-station.ino
+├── mongo-db
+│   ├── mongo-arm64v8.yml
+│   ├── mongodb_data
+│   └── mongo.yml
+├── mqtt-broker
+│   ├── mosquitto.conf
+│   └── mqtt-broker.yml
+├── README.md
+├── server
+│   ├── node_modules
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── README.md
+│   └── server.js
+└── start-service.sh
+```
+##### 1. mongo-db
+This folder contains the docker-compose file to run the database for the architectures amd64 and arm64v8.
+##### 2. mqtt-broker
+This folder contains the docker-compose file to run the mqtt-broker.
 ##### 3. esp32-firmware
 This folder contains the .ino file to be uploaded to the esp32.
 ##### 4. server
 This folder contains the server code to receive the data from the topic `weatherData` of the mqtt-broker and store it in the database.
-##### 5. 
-##### 6. 
+##### 5. api
+This folder contains the api code to get the data from the database and show it in the route `/weather` of the server.
+##### 6. web
+This folder contains the web code to show the data from the api in a web page.
 
-# Troubleshooting Commands
+## How to Run
+### Pre-requisites
+- Docker
+- Docker-compose
+- Platform to run the esp32 firmware
+
+Then, we are using a shell script (`start-service.sh`) to run every part of the project. 
+We have this project structured by parts, so we can run every part separately (so, we can run it in different machines).
+```bash
+# run the help and see the options
+./start-service.sh -h
+```
+
+## Troubleshooting Commands
 ```bash
 # send data to the broker
 mosquitto_pub -h localhost -t weatherData -m '{"temperature": 22, "humidity": 50}'
@@ -36,7 +77,6 @@ docker stop $(docker ps -aq)
 # remove all containers
 docker rm $(docker ps -aq)
 ```
-> Note: Due to we are using docker-compose, we don't need to remove the containers manually, just run `docker-compose down` to remove all containers and networks.
 
 ## References
 [mosquitto docker](https://hub.docker.com/_/eclipse-mosquitto/)

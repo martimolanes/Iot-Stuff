@@ -30,14 +30,22 @@ function start_database_arm() {
 function start_server() {
     echo "Starting server"
     cd server
+    npm ci
     npm start
 }
 
 function start_api() {
     echo "Starting api"
     cd api
+    npm ci
     npm start
 }
+
+# Check if the script is run from the git root directory
+if [[ $PWD != $(git rev-parse --show-toplevel) ]]; then
+    echo "This script must be run from the root directory of the repository"
+    exit 1
+fi
 
 command=${1:-}
 

@@ -15,6 +15,8 @@ function help() {
     echo "    $0 api              - start api"
     echo "  test scripts:"
     echo "    $0 publish-mqtt     - mock esp32 arduino"
+    echo "  stop:"
+    echo "    $0 stop             - stop all docker-services"
 }
 
 function start_mqtt() {
@@ -50,6 +52,13 @@ function publish_mqtt() {
     bash ./docs/examples/publisherMQTT.sh
 }
 
+function stop_services() {
+    echo "Stopping all services"
+    sudo docker-compose -f ./mqtt-broker/mqtt-broker.yml down
+    sudo docker-compose -f ./mongo-db/mongo.yml down
+    sudo docker-compose -f ./mongo-db/mongo-arm64v8.yml down
+}
+
 # Check if the script is run from the git root directory
 if [[ $PWD != $(git rev-parse --show-toplevel) ]]; then
     echo "This script must be run from the root directory of the repository"
@@ -65,6 +74,7 @@ case $command in
     server) start_server ;;
     api) start_api ;;
     publish-mqtt) publish_mqtt ;;
+    stop) stop_services ;;
     -h) help ;;
     --help) help ;;
     *) error_command ;;

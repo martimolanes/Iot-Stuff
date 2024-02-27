@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 function error_command() {
     echo "no such command $command"
@@ -7,11 +7,14 @@ function error_command() {
 
 function help() {
     echo "usage:"
-    echo "  $0 mqtt-broker      - start mqtt service"
-    echo "  $0 db               - start database service for x86_64 (default)"
-    echo "  $0 db:arm           - start database service for arm64v8 (Mac M1)"
-    echo "  $0 server           - start server"
-    echo "  $0 api              - start api"
+    echo "  run:"
+    echo "    $0 mqtt-broker      - start mqtt service"
+    echo "    $0 db               - start database service for x86_64 (default)"
+    echo "    $0 db:arm           - start database service for arm64v8 (Mac M1)"
+    echo "    $0 server           - start server"
+    echo "    $0 api              - start api"
+    echo "  test scripts:"
+    echo "    $0 publish-mqtt     - mock esp32 arduino"
 }
 
 function start_mqtt() {
@@ -43,6 +46,10 @@ function start_api() {
     npm start
 }
 
+function publish_mqtt() {
+    bash ./docs/examples/publisherMQTT.sh
+}
+
 # Check if the script is run from the git root directory
 if [[ $PWD != $(git rev-parse --show-toplevel) ]]; then
     echo "This script must be run from the root directory of the repository"
@@ -57,6 +64,7 @@ case $command in
     db:arm) start_database_arm ;;
     server) start_server ;;
     api) start_api ;;
+    publish-mqtt) publish_mqtt ;;
     -h) help ;;
     --help) help ;;
     *) error_command ;;

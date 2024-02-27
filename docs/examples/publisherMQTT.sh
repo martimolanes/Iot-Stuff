@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 # Description: This script is used to mock publishing on `weatherData` to the MQTT broker
 
 while true

@@ -1,3 +1,5 @@
+!#/bin/bash
+
 function error_command() {
     echo "no such command $command"
     help

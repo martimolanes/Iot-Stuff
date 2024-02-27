@@ -10,7 +10,6 @@ function help() {
     echo "  run:"
     echo "    $0 mqtt-broker      - start mqtt service"
     echo "    $0 db               - start database service for x86_64 (default)"
-    echo "    $0 db:arm           - start database service for arm64v8 (Mac M1)"
     echo "    $0 server           - start server"
     echo "    $0 api              - start api"
     echo "  test scripts:"
@@ -27,11 +26,6 @@ function start_mqtt() {
 function start_database() {
     echo "Starting database service"
     sudo docker-compose -f ./influx-db/influx.yml up -d
-}
-
-function start_database_arm() {
-    echo "Starting database service"
-    sudo docker-compose -f ./mongo-db/mongo-arm64v8.yml up -d
 }
 
 function start_server() {
@@ -70,7 +64,6 @@ command=${1:-}
 case $command in
     mqtt-broker) start_mqtt ;;
     db) start_database ;;
-    db:arm) start_database_arm ;;
     server) start_server ;;
     api) start_api ;;
     publish-mqtt) publish_mqtt ;;

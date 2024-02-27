@@ -5,25 +5,22 @@
 .
 ├── api
 │   ├── app.js
-│   ├── node_modules
 │   ├── package.json
-│   ├── package-lock.json
 │   └── routes
+│       └── weather.js
+├── docs
+│   └── examples
+│       └── publisherMQTT.sh
 ├── esp32-firmware
 │   └── weather-station.ino
 ├── mongo-db
 │   ├── mongo-arm64v8.yml
-│   ├── mongodb_data
 │   └── mongo.yml
 ├── mqtt-broker
 │   ├── mosquitto.conf
 │   └── mqtt-broker.yml
-├── README.md
 ├── server
-│   ├── node_modules
 │   ├── package.json
-│   ├── package-lock.json
-│   ├── README.md
 │   └── server.js
 └── start-service.sh
 ```
@@ -39,6 +36,9 @@ This folder contains the server code to receive the data from the topic `weather
 This folder contains the api code to get the data from the database and show it in the route `/weather` of the server.
 ##### 6. web
 This folder contains the web code to show the data from the api in a web page.
+##### 7. docs
+This folder contains some useful scripts to test the system.
+- `publisherMQTT.sh`: script to publish data to the mqtt-broker.
 
 ## How to Run
 ### Pre-requisites
@@ -54,6 +54,7 @@ We have this project structured by parts, so we can run every part separately (s
 ```
 
 ## Troubleshooting Commands
+There is some useful scripts to help you in the direcotry `docs/examples`.
 ```bash
 # send data to the broker
 mosquitto_pub -h localhost -t weatherData -m '{"temperature": 22, "humidity": 50}'
@@ -79,4 +80,5 @@ docker rm $(docker ps -aq)
 ```
 
 ## References
+> Structure generated with command `tree -I node_modules -I package-lock.json -I mongodb_data -I README.md`
 [mosquitto docker](https://hub.docker.com/_/eclipse-mosquitto/)

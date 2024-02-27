@@ -1,34 +1,29 @@
 import express from "express";
 import mqtt from "mqtt";
-import { MongoClient } from "mongodb";
+import { InfluxDB, Point } from '@influxdata/influxdb-client'
+
 
 // Create an Express application
 const app = express();
 
 const PORT = 6969;
-// TODO: try using a time-series database like InfluxDB
-const MONGO_URI = "mongodb://root:example@localhost:27017";
-const dbName = "Weather";
 const TOPIC_NAME = "weatherData";
+
+// InfluxDB configuration
+const url = "http://localhost:8086";
+const token = "ZfJtbhoQ71-JEFnsweDdbozHZhosjjC-lCO6pPuGwzsFESt2dFgty-8aSjBe3YOvdJYbYpIyYFYm_PMBD6mieQ==";
+const org = "my-org";
+const bucket = "my-bucket";
+
+const influxDB = new InfluxDB({ url, token });
+
+const writeApi = influxDB.getWriteApi(org, bucket);
 
 // MQTT Broker configuration
 const MQTT_BROKER = "mqtt://localhost:1883";
+
 console.log("Listening to MQTT Broker: ", MQTT_BROKER);
 const mqttClient = mqtt.connect(MQTT_BROKER);
-
-let db;
-
-// Connect to MongoDB
-const connectToMongoDB = async () => {
-  const client = new MongoClient(MONGO_URI);
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB in: ", MONGO_URI);
-    db = client.db(dbName);
-  } catch (err) {
-    console.error("Failed to connect to MongoDB: ", err);
-  }
-};
 
 const subscribeToMQTTTopic = (topic) => {
   mqttClient.subscribe(topic);
@@ -43,21 +38,19 @@ const handleMQTTMessage = (topic, message) => {
   );
   // TODO: Check message format
   const weatherData = JSON.parse(message);
-  save(weatherData);
+  saveToDatabase(weatherData);
 };
 
-const save = async (weatherData) => {
-  const collection = db.collection("weather");
-  try {
-    await collection.insertOne(weatherData);
-    console.log("Saved to MongoDB: ", weatherData);
-  } catch (err) {
-    console.error("Failed to save to MongoDB: ", err);
-  }
+const saveToDatabase = (weatherData) => {
+    const point = new Point("weather")
+        .tag("location", weatherData.location)
+        .floatField("temperature", weatherData.temperature)
+        .floatField("humidity", weatherData.humidity)
+    console.log("Writing to InfluxDB: ", point.toLineProtocol());
+    writeApi.writePoint(point);
 };
 
-async function init() {
-  await connectToMongoDB();
+function init() {
   subscribeToMQTTTopic(TOPIC_NAME);
   // Start the Express server
   app.listen(PORT, () => {

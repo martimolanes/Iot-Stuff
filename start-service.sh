@@ -49,8 +49,7 @@ function publish_mqtt() {
 function stop_services() {
     echo "Stopping all services"
     sudo docker-compose -f ./mqtt-broker/mqtt-broker.yml down
-    sudo docker-compose -f ./mongo-db/mongo.yml down
-    sudo docker-compose -f ./mongo-db/mongo-arm64v8.yml down
+    sudo docker-compose -f ./influx-db/influx.yml down
 }
 
 # Check if the script is run from the git root directory

@@ -26,7 +26,7 @@ function start_mqtt() {
 
 function start_database() {
     echo "Starting database service"
-    sudo docker-compose -f ./mongo-db/mongo.yml up -d
+    sudo docker-compose -f ./influx-db/influx.yml up -d
 }
 
 function start_database_arm() {

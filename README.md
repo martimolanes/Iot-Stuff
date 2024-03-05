@@ -33,9 +33,7 @@ Contains the .ino file to be uploaded to the esp32. The firmware is responsible 
 Contains the server code to read the data from the topic `weatherData` from the mqtt-broker and store it in the database.
 ##### 5. api
 Contains the api code to get the data from the database and show it in the route `/weather` of the server.
-##### 6. web
-Contains the web code to show the data from the api in a web page.
-##### 7. docs
+##### 6. docs
 Contains some useful scripts to test the system.
 - `publisherMQTT.sh`: script to publish data to the mqtt-broker.
 
@@ -60,6 +58,7 @@ mosquitto_pub -h localhost -t weatherData -m '{"temperature": 22, "humidity": 50
 # subscribe to the some topic of the broker
 mosquitto_sub -h localhost -t weatherData
 ```
+> Note: For mocking the esp32, we are using the `publisherMQTT.sh` script in the `docs/examples` directory.
 
 ## How to Docker
 This are some useful commands to manage docker containers:
@@ -72,13 +71,22 @@ docker ps -a
 docker stop <container_id>
 # remove a container
 docker rm <container_id>
-# stop all containers
+# stop all containers in the system
 docker stop $(docker ps -aq)
-# remove all containers
+# remove all containers in the system (use with caution)
 docker rm $(docker ps -aq)
 ```
-> We are using docker-compose to manage the containers and we are using the `start-service.sh` to run the docker-compose files and stop them.
+> We are using docker-compose to manage the containers and we are using the `start-service.sh` to run the docker-compose files and stop them. Try `start-service.sh -h`.
 
 ## References
 > Structure generated with command `tree -I node_modules -I package-lock.json -I mongodb_data -I README.md`
+
 [mosquitto docker](https://hub.docker.com/_/eclipse-mosquitto/)
+
+[influxDB docs](https://docs.influxdata.com/influxdb/v2/)
+
+[influxDB docker](https://hub.docker.com/_/influxdb)
+
+[grafana docs](https://grafana.com/docs/grafana/latest/)
+
+[grafana docker](https://hub.docker.com/r/grafana/grafana)

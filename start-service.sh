@@ -9,7 +9,7 @@ function help() {
     echo "usage:"
     echo "  run:"
     echo "    $0 mqtt-broker      - start mqtt service"
-    echo "    $0 db               - start database service for x86_64 (default)"
+    echo "    $0 db               - start database service with visualization (influxdb, grafana)"
     echo "    $0 server           - start server"
     echo "    $0 api              - start api"
     echo "  test scripts:"

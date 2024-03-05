@@ -8,13 +8,14 @@ services:
       - 8086:8086
     volumes:
       - influx-data:/var/lib/influxdb2
+      - influx-config:/etc/influxdb2
     environment:
-      # only needed for the first run
-      #DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: my-user
       DOCKER_INFLUXDB_INIT_PASSWORD: my-password
       DOCKER_INFLUXDB_INIT_ORG: my-org
       DOCKER_INFLUXDB_INIT_BUCKET: my-bucket
+      #FIXME: token setup not working (https://github.com/influxdata/influxdata-docker/issues/698) need to set manually in UI.
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: my-token
 # https://hub.docker.com/r/grafana/grafana/#!
   grafana:
@@ -30,3 +31,4 @@ services:
 volumes:
   grafana-data: {}
   influx-data: {}
+  influx-config: {}

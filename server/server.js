@@ -2,7 +2,6 @@ import express from "express";
 import mqtt from "mqtt";
 import { InfluxDB, Point } from '@influxdata/influxdb-client'
 
-
 // Create an Express application
 const app = express();
 

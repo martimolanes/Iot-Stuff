@@ -11,6 +11,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - 27017:27017
+    volumes:
+      - ./mongodb_data:/data/db
 
   mongo-express:
     image: arm64v8/mongo-express
@@ -22,3 +24,5 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
 
+volumes:
+  mongodb_data:

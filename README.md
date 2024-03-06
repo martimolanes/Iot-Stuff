@@ -49,6 +49,10 @@ We have this project structured by parts, so we can run every part separately (s
 # run the help and see the options
 ./start-service.sh -h
 ```
+Note: the script uses docker-compose to run the containers. So, if you cannot execute docker without sudo, you need to add your user to the docker group.
+```bash
+sudo usermod -aG docker $USER
+```
 
 ## Troubleshooting Commands
 There is some useful scripts to help you in the direcotry `docs/examples`.

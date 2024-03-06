@@ -20,12 +20,12 @@ function help() {
 
 function start_mqtt() {
     echo "Starting mqtt service"
-    sudo docker-compose -f ./mqtt-broker/mqtt-broker.yml up -d
+    docker-compose -f ./mqtt-broker/mqtt-broker.yml up -d
 }
 
 function start_database() {
     echo "Starting database service"
-    sudo docker-compose -f ./influx-db/influx.yml up -d
+    docker-compose -f ./influx-db/influx.yml up -d
 }
 
 function start_server() {
@@ -48,8 +48,8 @@ function publish_mqtt() {
 
 function stop_services() {
     echo "Stopping all services"
-    sudo docker-compose -f ./mqtt-broker/mqtt-broker.yml down
-    sudo docker-compose -f ./influx-db/influx.yml down
+    docker-compose -f ./mqtt-broker/mqtt-broker.yml down
+    docker-compose -f ./influx-db/influx.yml down
 }
 
 # Check if the script is run from the git root directory

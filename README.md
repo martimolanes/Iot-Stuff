@@ -4,15 +4,15 @@
 ```bash
 .
 ├── api
-│   ├── app.js
-│   ├── package.json
-│   └── routes
-│       └── weather.js
+│   ├── Dockerfile
+│   ├── go.mod
+│   └── main.go
 ├── docs
 │   └── examples
 │       └── publisherMQTT.sh
 ├── esp32-firmware
-│   └── weather-station.ino
+│   └── weather_station_authentication
+│       └── weather_station_authentication.ino
 ├── influx-db
 │   └── influx.yml
 ├── mqtt-broker
@@ -36,6 +36,8 @@ Contains the api code to get the data from the database and show it in the route
 ##### 6. docs
 Contains some useful scripts to test the system.
 - `publisherMQTT.sh`: script to publish data to the mqtt-broker.
+##### 7. start-service.sh
+Script to run every part of the project.
 
 ## How to Run
 ### Pre-requisites
@@ -52,6 +54,14 @@ We have this project structured by parts, so we can run every part separately (s
 Note: the script uses docker-compose to run the containers. So, if you cannot execute docker without sudo, you need to add your user to the docker group.
 ```bash
 sudo usermod -aG docker $USER
+```
+
+## Completions for ZSH
+If you are using zsh, you can use the `_start-service` file to have the completions for the `start-service.sh` script.
+
+```bash
+cp _start-service ~/.zfunc/
+source ~/.zshrc
 ```
 
 ## Troubleshooting Commands
@@ -92,16 +102,8 @@ docker volume ls
 docker volume rm <volume_name>
 ```
 
-## Completions for ZSH
-
-```bash
-cp _start-service ~/.zfunc/
-source ~/.zshrc
-```
-
-
 ## References
-> Structure generated with command `tree -I node_modules -I package-lock.json -I mongodb_data -I README.md`
+> Structure generated with command `tree -I node_modules -I package-lock.json -I go.sum -I README.md -I LICENSE -I _start-service -I TODO.md`
 
 [mosquitto docker](https://hub.docker.com/_/eclipse-mosquitto/)
 

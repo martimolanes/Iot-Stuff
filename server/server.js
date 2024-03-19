@@ -1,7 +1,9 @@
 import express from "express";
 import mqtt from "mqtt";
 import { InfluxDB, Point } from '@influxdata/influxdb-client'
+import dotenv from "dotenv";
 
+dotenv.config();
 // Create an Express application
 const app = express();
 
@@ -9,10 +11,10 @@ const PORT = 6969;
 const TOPIC_NAME = "weatherData";
 
 // InfluxDB configuration
-const url = "http://localhost:8086";
-const token = "ZfJtbhoQ71-JEFnsweDdbozHZhosjjC-lCO6pPuGwzsFESt2dFgty-8aSjBe3YOvdJYbYpIyYFYm_PMBD6mieQ==";
-const org = "my-org";
-const bucket = "my-bucket";
+const url = process.env.INFLUXDB_URL;
+const token = process.env.INFLUXDB_TOKEN;
+const org = process.env.INFLUXDB_ORG;
+const bucket = process.env.INFLUXDB_BUCKET;
 
 const influxDB = new InfluxDB({ url, token });
 
@@ -25,19 +27,19 @@ console.log("Listening to MQTT Broker: ", MQTT_BROKER);
 const mqttClient = mqtt.connect(MQTT_BROKER);
 
 const subscribeToMQTTTopic = (topic) => {
-  mqttClient.subscribe(topic);
-  console.log("Subscribed to topic: ", topic);
-  mqttClient.on("message", handleMQTTMessage);
+    mqttClient.subscribe(topic);
+    console.log("Subscribed to topic: ", topic);
+    mqttClient.on("message", handleMQTTMessage);
 };
 
 const handleMQTTMessage = (topic, message) => {
-  console.log(
-    "Received message from topic ",
-    topic + ": " + message.toString(),
-  );
-  // TODO: Check message format
-  const weatherData = JSON.parse(message);
-  saveToDatabase(weatherData);
+    console.log(
+        "Received message from topic ",
+        topic + ": " + message.toString(),
+    );
+    // TODO: Check message format
+    const weatherData = JSON.parse(message);
+    saveToDatabase(weatherData);
 };
 
 const saveToDatabase = (weatherData) => {
@@ -50,11 +52,11 @@ const saveToDatabase = (weatherData) => {
 };
 
 function init() {
-  subscribeToMQTTTopic(TOPIC_NAME);
-  // Start the Express server
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+    subscribeToMQTTTopic(TOPIC_NAME);
+    // Start the Express server
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
 }
 
 init();

@@ -1,0 +1,13 @@
+#compdef start-service.sh
+
+local -a subcommands
+subcommands=('mqtt-broker:Start mqtt service'
+             'db:Start database service with visualization'
+             'server:Start server'
+             'api:Start API'
+             'publish-mqtt:Mock esp32 arduino'
+             'stop:Stop all docker-services'
+             '-h:Show help'
+             '--help:Show help')
+
+_describe -t commands 'start-service.sh subcommands' subcommands

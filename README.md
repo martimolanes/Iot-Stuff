@@ -92,6 +92,14 @@ docker volume ls
 docker volume rm <volume_name>
 ```
 
+## Completions for ZSH
+
+```bash
+cp _start-service ~/.zfunc/
+source ~/.zshrc
+```
+
+
 ## References
 > Structure generated with command `tree -I node_modules -I package-lock.json -I mongodb_data -I README.md`
 

@@ -4,12 +4,12 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-// WiFi settings
+// WiFi configuration
 const char* ssid = "MB210-G";
 const char* password = "studentMAMK";
 
 // MQTT Server IP address
-const char* mqtt_server = "172.20.49.16"; // Add the network IP address
+const char* mqtt_server = "172.20.49.16"; // Network IP address
 
 WiFiClient espClient; // WiFi client
 PubSubClient mqttClient(espClient); // MQTT client
@@ -24,7 +24,6 @@ DHT dht(DHTPIN, DHTTYPE);
 #define RST_PIN 22
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
 
-// Authorization flag
 bool isAuthorized = false;
 
 // Measurement struct definition for linked list
@@ -48,7 +47,7 @@ void setup() {
     mqttClient.setServer(mqtt_server, 1883); // Set MQTT server
     Serial.println("Please insert a card to the reader for authorization.");
 
-    // Initialize linked list for averaging
+    // Initialize linked list
     firstMeasurement = (struct measurement*) malloc(sizeof(struct measurement));
     firstMeasurement->next = NULL;
     currentMeasurement = firstMeasurement;
@@ -85,6 +84,7 @@ void reconnect() {
     }
 }
 
+
 bool isCardAuthorized() {
     String readUID = "";
     for (byte i = 0; i < mfrc522.uid.size; i++) {
@@ -92,13 +92,17 @@ bool isCardAuthorized() {
         readUID.concat(String(mfrc522.uid.uidByte[i], HEX));
     }
     readUID.toUpperCase();
-    // Replace the placeholder UID with the UID of your authorized card
+    // UID of authorized card
     if (readUID == " 32 C7 E5 1B") {
         return true;
     }
     return false;
 }
 
+/*
+ * Add a new measurement to the linked list
+ * If the list is full (only 5 measures stored), the oldest measurement is overwritten
+ */
 void addMeasurement(float temperature) {
     currentMeasurement->temperature = temperature;
     measurementCounter += 1;
@@ -155,8 +159,7 @@ void loop() {
                 delay(2000); // Add a delay to prevent immediate re-prompt
             }
         }
-    } else {
-        // Authorized - Proceed with temperature measurement and publication
+    } else { // Authorized - Proceed with temperature measurement and publication
         float measuredTemp = dht.readTemperature();
         Serial.print("Temperature: ");
         Serial.println(measuredTemp);

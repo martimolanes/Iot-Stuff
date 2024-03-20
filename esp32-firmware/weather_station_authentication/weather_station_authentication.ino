@@ -9,7 +9,7 @@ const char* ssid = "MB210-G";
 const char* password = "studentMAMK";
 
 // MQTT Server IP address
-const char* mqtt_server = "172.20.49.16"; // Network IP address
+const char* mqtt_server = "172.20.49.52"; // Network IP address
 
 WiFiClient espClient; // WiFi client
 PubSubClient mqttClient(espClient); // MQTT client
@@ -29,7 +29,13 @@ bool isAuthorized = false;
 // Measurement struct definition for linked list
 struct measurement {
     float temperature;
+    float humidity;
     struct measurement *next;
+};
+
+struct avgMeasurements {
+  float Temp;
+  float Hum;
 };
 
 // Struct pointers for linked list
@@ -103,8 +109,9 @@ bool isCardAuthorized() {
  * Add a new measurement to the linked list
  * If the list is full (only 5 measures stored), the oldest measurement is overwritten
  */
-void addMeasurement(float temperature) {
+void addMeasurement(float temperature, float humidity) {
     currentMeasurement->temperature = temperature;
+    currentMeasurement->humidity = humidity;
     measurementCounter += 1;
 
     if (measurementCounter == amountOfMeasurements) {
@@ -113,7 +120,9 @@ void addMeasurement(float temperature) {
     } else {
         if (!currentMeasurement->next) {
             struct measurement *nextMeasurement = (struct measurement*) malloc(sizeof(struct measurement));
-            nextMeasurement->temperature = 0; // Initialize temperature of new node
+            // Initialize new node
+            nextMeasurement->temperature = 0;
+            nextMeasurement->humidity = 0;
             nextMeasurement->next = NULL; // Ensure the new node points to NULL
             currentMeasurement->next = nextMeasurement;
             currentMeasurement = nextMeasurement;
@@ -123,21 +132,23 @@ void addMeasurement(float temperature) {
     }
 }
 
-float calculateAverage() {
-    float avgTemp = 0.0;
-    struct measurement* avgMeasurement = firstMeasurement;
+void calculateAverage(struct avgMeasurements* avgMeasurements) {
+    struct measurement* measurement = firstMeasurement;
+    float tempAccum = 0;
+    float humAccum = 0;
     int count = 0;
 
-    while (avgMeasurement) {
-        avgTemp += avgMeasurement->temperature;
-        avgMeasurement = avgMeasurement->next;
+    while (measurement) {
+        tempAccum += measurement->temperature;
+        humAccum += measurement->humidity;
+        measurement = measurement->next;
         count++;
     }
 
     if (count > 0) {
-        avgTemp /= count;
+        avgMeasurements->Temp = tempAccum / count;
+        avgMeasurements->Hum = humAccum / count;
     }
-    return avgTemp;
 }
 
 void loop() {
@@ -161,17 +172,26 @@ void loop() {
         }
     } else { // Authorized - Proceed with temperature measurement and publication
         float measuredTemp = dht.readTemperature();
+        float measuredHum = dht.readHumidity();
         Serial.print("Temperature: ");
         Serial.println(measuredTemp);
+        Serial.print("Humidity: ");
+        Serial.println(measuredHum);
 
-        addMeasurement(measuredTemp);
-        float averageTemp = calculateAverage();
-        Serial.print("Average Temperature: ");
-        Serial.println(averageTemp);
+        addMeasurement(measuredTemp, measuredHum);
+        struct avgMeasurements averageMeasurement = { 
+          0.0, 0.0
+        };
+        calculateAverage(&averageMeasurement);
+        char strBuf[50];
+        sprintf(strBuf, "\ttemperature: %.2f\n\thumidity: %.2f", averageMeasurement.Temp, averageMeasurement.Hum);
+        Serial.println("Average measurement: ");
+        Serial.println(strBuf);
 
-        char tempString[8];
-        dtostrf(averageTemp, 1, 2, tempString);
-        mqttClient.publish("esp32/temperature", tempString);
+        char tempString[50];
+        //{"temperature": $TEMPERATURE, "humidity": $HUMIDITY, "location": "$LOCATION"}
+        sprintf(strBuf, "{\"temperature\": %.2f, \"humidity\": %.2f, \"location\": \"%s\"}", averageMeasurement.Temp, averageMeasurement.Hum, "office");
+        mqttClient.publish("weatherData", tempString);
 
         delay(2000); // Delay between measurements
     }

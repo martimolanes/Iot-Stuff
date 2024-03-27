@@ -37,9 +37,8 @@ function start_server() {
 
 function start_api() {
     echo "Starting api"
-    cd api
-    npm ci
-    npm start
+    docker build -t go-api-weather-station api/
+    docker run --rm --name go-api --network="host" -d go-api-weather-station
 }
 
 function publish_mqtt() {

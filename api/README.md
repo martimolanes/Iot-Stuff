@@ -5,6 +5,15 @@ go get -u github.com/gorilla/mux
 go get github.com/joho/godotenv
 go get -u go.uber.org/zap
 
+## Add a .env file with 
+
+```
+INFLUX_URL="http://localhost:8086"
+INFLUX_ORG="my-org"
+INFLUX_BUCKET="my-bucket"
+INFLUX_TOKEN="my-token"
+```
+
 ## Run
 
 ```bash

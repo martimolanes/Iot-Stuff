@@ -11,10 +11,10 @@ const PORT = 6969;
 const TOPIC_NAME = "weatherData";
 
 // InfluxDB configuration
-const url = process.env.INFLUXDB_URL;
-const token = process.env.INFLUXDB_TOKEN;
-const org = process.env.INFLUXDB_ORG;
-const bucket = process.env.INFLUXDB_BUCKET;
+const url = process.env.INFLUX_URL;
+const token = process.env.INFLUX_TOKEN;
+const org = process.env.INFLUX_ORG;
+const bucket = process.env.INFLUX_BUCKET;
 
 const influxDB = new InfluxDB({ url, token });
 

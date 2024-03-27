@@ -9,7 +9,7 @@ go get -u go.uber.org/zap
 
 ```bash
 docker build -t go-api-weather-station .
-docker run --rm --name go-api --network="host" -d go-api
+docker run --rm --name go-api --network="host" -d go-api-weather-station
 ```
 
 ## References

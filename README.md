@@ -74,6 +74,9 @@ mosquitto_sub -h localhost -t weatherData
 ```
 > Note: For mocking the esp32, we are using the `publisherMQTT.sh` script in the `docs/examples` directory.
 
+## Useful Queries
+SELECT "temperature", "humidity" FROM "weather"
+
 ## How to Docker
 This are some useful commands to manage docker containers:
 ```bash

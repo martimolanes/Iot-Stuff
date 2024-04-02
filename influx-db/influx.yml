@@ -1,5 +1,4 @@
 # https://hub.docker.com/_/influxdb
-version: '3.8'
 services:
   influxdb:
     image: influxdb:latest

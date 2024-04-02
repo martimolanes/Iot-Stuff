@@ -188,9 +188,9 @@ void loop() {
         Serial.println("Average measurement: ");
         Serial.println(strBuf);
 
-        char tempString[50];
+        char tempString[100];
         //{"temperature": $TEMPERATURE, "humidity": $HUMIDITY, "location": "$LOCATION"}
-        sprintf(tempString, "{\"temperature\": %.2f, \"humidity\": %.2f, \"location\": \"%s\"}", averageMeasurement.Temp, averageMeasurement.Hum, "office");
+        sprintf(tempString, "{\"temperature\": %.2f, \"humidity\": %.2f, \"location\": \"office\"}", averageMeasurement.Temp, averageMeasurement.Hum);
         mqttClient.publish("weatherData", tempString);
 
         delay(2000); // Delay between measurements

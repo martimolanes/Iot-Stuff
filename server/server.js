@@ -33,12 +33,17 @@ const subscribeToMQTTTopic = (topic) => {
 };
 
 const handleMQTTMessage = (topic, message) => {
+    let weatherData = ""
     console.log(
         "Received message from topic ",
         topic + ": " + message.toString(),
     );
-    // TODO: Check message format
-    const weatherData = JSON.parse(message);
+    try {
+        weatherData = JSON.parse(message)
+    } catch (error) {
+        console.error("Failed to parse message (sensor probably not working): ");
+        return;
+    }
     saveToDatabase(weatherData);
 };
 

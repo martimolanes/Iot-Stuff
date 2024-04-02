@@ -23,7 +23,7 @@ dashboard in Grafana to visualize our temperature data and humidity data.
 4. To use Flux we need only 4 parameters
 (`URL`, `Token`, `User`, `Database`).
 This are the default values for our project, you can change them in the
-`./influx-db/influx.yml` file.
+`./influx-grafana/influx-grafana.yml` file.
 
 - Query Language: Flux
 - URL: [http://influxdb:8086](http://influxdb:8086)

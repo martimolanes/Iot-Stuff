@@ -15,4 +15,5 @@ The project default credentials are:
 
 - Password: `my-password`
 
-> Note: You can change the credentials in the `./influx-db/influx.yml` file.
+> Note: You can change the credentials in the
+`./influx-grafana/influx-grafana.yml` file.

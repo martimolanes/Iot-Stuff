@@ -14,8 +14,8 @@
 ├── esp32-firmware
 │   └── weather_station_authentication
 │       └── weather_station_authentication.ino
-├── influx-db
-│   └── influx.yml
+├── influx-grafana
+│   └── influx-grafana.yml
 ├── mqtt-broker
 │   ├── mosquitto.conf
 │   └── mqtt-broker.yml
@@ -27,10 +27,10 @@
 
 ### Structure Explanation
 
-#### 1. influx-db
+#### 1. influx-grafana
 
-Contains the docker-compose file to run the database for the architectures
-amd64 and arm64v8.
+Contains the docker-compose file to run the influxdb and grafana.
+Contains Configurations for InfluxDB via environment variables.
 
 #### 2. mqtt-broker
 

@@ -24,8 +24,8 @@ function start_mqtt() {
 }
 
 function start_database() {
-    echo "Starting database service"
-    docker-compose -f ./influx-db/influx.yml up -d
+    echo "Starting influxdb and grafana services"
+    docker-compose -f ./influx-grafana/influx-grafana.yml up -d
 }
 
 function start_server() {
@@ -48,7 +48,7 @@ function publish_mqtt() {
 function stop_services() {
     echo "Stopping all services"
     docker-compose -f ./mqtt-broker/mqtt-broker.yml down
-    docker-compose -f ./influx-db/influx.yml down
+    docker-compose -f ./influx-grafana/influx-grafana.yml down
 }
 
 # Check if the script is run from the git root directory

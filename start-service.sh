@@ -75,16 +75,16 @@ if [[ $PWD != $(git rev-parse --show-toplevel) ]]; then
     exit 1
 fi
 
-command=${1:-}
-
-case $command in
-    mqtt-broker) start_mqtt ;;
-    db) start_database ;;
-    server) start_server ;;
-    api) start_api ;;
-    publish-mqtt) publish_mqtt ;;
-    stop) stop_services ;;
-    -h) help ;;
-    --help) help ;;
-    *) error_command ;;
-esac
+for command in "$@"; do
+    case $command in
+        mqtt-broker) start_mqtt ;;
+        db) start_database ;;
+        server) start_server ;;
+        api) start_api ;;
+        publish-mqtt) publish_mqtt ;;
+        stop) stop_services ;;
+        -h) help ;;
+        --help) help ;;
+        *) error_command ;;
+    esac
+done

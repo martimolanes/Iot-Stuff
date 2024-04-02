@@ -190,7 +190,7 @@ void loop() {
 
         char tempString[50];
         //{"temperature": $TEMPERATURE, "humidity": $HUMIDITY, "location": "$LOCATION"}
-        sprintf(strBuf, "{\"temperature\": %.2f, \"humidity\": %.2f, \"location\": \"%s\"}", averageMeasurement.Temp, averageMeasurement.Hum, "office");
+        sprintf(tempString, "{\"temperature\": %.2f, \"humidity\": %.2f, \"location\": \"%s\"}", averageMeasurement.Temp, averageMeasurement.Hum, "office");
         mqttClient.publish("weatherData", tempString);
 
         delay(2000); // Delay between measurements

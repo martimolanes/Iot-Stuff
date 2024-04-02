@@ -138,7 +138,7 @@ void calculateAverage(struct avgMeasurements* avgMeasurements) {
     float humAccum = 0;
     int count = 0;
 
-    while (measurement) {
+    while (measurement && measurement->humidity != 0) {
         tempAccum += measurement->temperature;
         humAccum += measurement->humidity;
         measurement = measurement->next;

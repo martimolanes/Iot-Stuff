@@ -75,6 +75,12 @@ if [[ $PWD != $(git rev-parse --show-toplevel) ]]; then
     exit 1
 fi
 
+# Check if command is empty
+if [ $# -eq 0 ]; then
+    help
+    exit 1
+fi
+
 for command in "$@"; do
     case $command in
         mqtt-broker) start_mqtt ;;

@@ -1,5 +1,7 @@
+# TODO
+
 ARDUINO
-- RFID Authentication for start sending data
+
 - LED blinking if mqtt-broker is down
 - LED each time a message is sent
 - LED if sensor is disconnected
@@ -7,9 +9,11 @@ ARDUINO
 - RFID write weather data to phone (or card)
 
 BROKER
+
 - add option for spawning more than one publisher
-- try rabbitmq
+- rabbitmq upgrade
 
 API
-- logger
+
+- logger management
 - instrumenting with APM

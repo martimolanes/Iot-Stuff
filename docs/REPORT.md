@@ -15,23 +15,28 @@ linestretch: 1.2
 
 This project represents a comprehensive exploration into the realm of IoT,
 integrating hardware, software, and networking components to create a flexible
-and deployable solution for weather monitoring. The core components of the
-system include an ESP32 microcontroller, temperature and humidity sensors
-(DHT22/DHT11), RFIC RC522 sensor,an MQTT broker server,
-and a self-made web server. These elements work in concert to collect real-time
-environmental data, analyze it, and make it visible to end users via a
-web interface. Furthermore, the project has advanced features such as RFID
-authentication, enabling enhanced security and control over access to the
-weather station.
+and deployable solution for `Weather Monitoring`.
+
+The core components of the system include an ESP32 microcontroller,
+temperature and humidity sensors (DHT22/DHT11), RFIC RC522 sensor,
+an MQTT broker server, and a self-made web API.
+These elements work in concert to collect real-time environmental data,
+analyze it, and make it visible to end users via a
+visualization of the measurements using Grafana.
+
+Furthermore, the project has features such as RFID authentication,
+enabling the activation of the weather station only by authorized users.
 
 ## Table of Contents
 
 1. [System Architecture](#system-architecture)
-    - [Docker](#docker)
-    - [ESP32 & DHT11](#esp32-with-dht11-sensor)
+    - [ESP32 & DHT11](#esp32--dht11)
     - [MQTT Broker](#mqtt-broker)
     - [Server](#server)
     - [API](#api)
+    - [InfluxDB](#influxdb)
+    - [Grafana](#grafana)
+    - [Docker](#docker)
 2. [Deployment](#deployment)
 3. [Usage](#usage)
     - [Pre-requisites](#pre-requisites)
@@ -61,12 +66,13 @@ Here's a visual representation of the system architecture:
 
 The architecture is as follows:
 
-### ESP32 with DHT11 Sensor
+### ESP32 & DHT11
 
-The ESP32 is a series of low-cost, low-power system on a chip microcontrollers
-with integrated Wi-Fi and dual-mode Bluetooth.
-The ESP32 series employs a Tensilica Xtensa LX6 microprocessor in both dual-core
-and single-core variations and includes built-in antenna switches, RF balun,
+The _ESP32_ is a series of low-cost, low-power system on a chip microcontrollers
+with integrated Wi-Fi and Bluetooth.
+The _ESP32_ series employs a Tensilica Xtensa LX6 microprocessor in both dual-core
+and single-core variations and includes built-in antenna switches, multiple GPIOs,
+a wide range of communication protocols such as SPI, I2C, I2S interfaces and UART;
 power amplifier, low-noise receive amplifier, filters, and power-management modules.
 
 This is the hardware component of the weather station.
@@ -74,12 +80,22 @@ This is the hardware component of the weather station.
 > Note : Deploy multiple ESP32s in different locations to collect weather data
 > from various sources, is possible with this architecture.
 
-It collects temperature and humidity data and publishes it to the MQTT Broker.
+The _DHT11_ is a basic, ultra low-cost digital temperature and humidity sensor.
+It uses a capacitive humidity sensor and a thermistor
+to measure the surrounding air, and spits out a digital signal on the data pin.
+
+The _DHT11_ can measure temperature from 0°C to 50°C with a ±2°C accuracy,
+and humidity from 20% to 80% with a ±5% accuracy.
+The sensor operates on a 3 to 5.5V power supply and consumes very low power
+
+So, the combination of an _ESP32 & DHT11_, collects temperature and humidity data
+and publishes it to the MQTT Broker.
+
 In the project, there is a specific folder (`esp32-firmware`)
 that contains the code to be uploaded to the ESP32.
 
-The firmware for the ESP32 is written in C++ and is responsible for reading data
-from the DHT11 sensor and publishing it to the MQTT broker.
+The firmware for the ESP32 is written in C++ (_Arduino_) and is responsible
+for reading data from the DHT11 sensor and publishing it to the MQTT broker.
 The firmware also includes code for handling RFID authentication.
 
 ### MQTT Broker
@@ -140,7 +156,6 @@ In this project, this multi-stage build decreased size of the image from
 [InfluxDB](https://www.influxdata.com/) is an open-source lightweight
 time series database (TSDB) that is used to store the weather data received
 from the server.
-
 
 ### Grafana
 

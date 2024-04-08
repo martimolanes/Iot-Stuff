@@ -1,13 +1,16 @@
 #compdef start-service.sh
 
 local -a subcommands
-subcommands=('mqtt-broker:Start mqtt service'
-             'db:Start database service with visualization (influxdb, grafana)'
-             'server:Start server (write data to influxdb)'
-             'api:Start api (expose data from influxdb)'
-             'publish-mqtt:Mock esp32 arduino (publish data to mqtt broker)'
-             'stop:Stop all project services'
-             '-h:Show help'
-             '--help:Show help')
+subcommands=(
+    'mqtt-broker:Start mqtt service'
+    'db:Start database service with visualization (influxdb, grafana)'
+    'server:Start server (write data to influxdb)'
+    'api:Start api (expose data from influxdb)'
+    'publish-mqtt:Mock esp32 arduino (publish data to mqtt broker)'
+    'stop:Stop all project services'
+    'build-docs:Build project documentation(report.pdf)'
+    '-h:Show help'
+    '--help:Show help'
+         )
 
 _describe -t commands 'start-service.sh subcommands' subcommands

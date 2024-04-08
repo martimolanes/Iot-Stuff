@@ -16,6 +16,8 @@ function help() {
     echo "    $0 publish-mqtt     - mock esp32 arduino (publish data to mqtt broker)"
     echo "  stop:"
     echo "    $0 stop             - stop all project services"
+    echo "  docs:"
+    echo "    $0 build-docs       - build project overview (report.pdf)"
 }
 
 function start_mqtt() {
@@ -91,6 +93,7 @@ for command in "$@"; do
         stop) stop_services ;;
         -h) help ;;
         --help) help ;;
+        build-docs)  pandoc -f markdown docs/REPORT.md -s -o report.pdf;;
         *) error_command ;;
     esac
 done

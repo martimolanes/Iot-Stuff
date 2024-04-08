@@ -36,7 +36,6 @@ weather station.
 3. [Usage](#usage)
     - [Pre-requisites](#pre-requisites)
     - [How to Run](#how-to-run)
-    - [Troubleshooting](#troubleshooting)
 4. [References](#references)
 
 ## System Architecture

@@ -1,4 +1,12 @@
-# Deployable Weather Station
+<div align="center">
+
+# Scalable Weather Station for ESP32
+
+"An **all-in-one** ESP32 **weather station monorepo**, featuring a _GO_ API, _MQTT Broker_, _InfluxDB-Grafana_ for data visualization, server-side _JavaScript_, all orchestrated with a **single** start-up script."
+
+<img alt="esp32 design weather station" height="490" src="./docs/images/weather-station-logo.jpg" />
+
+</div>
 
 ## Structure
 
@@ -26,6 +34,11 @@
 ```
 
 ### Structure Explanation
+
+> If you want a more smooth-grained explanation, you can compile the technical
+> documentation with the command `./start-service.sh build-docs`.It will
+> generate a `report.pdf` in the root directory.
+> The next explanation is a more high-level overview of the project.
 
 #### 1. influx-grafana
 

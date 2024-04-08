@@ -1,2 +1,3 @@
 influx-grafana/.env
 mqtt-broker/.env
+report.pdf

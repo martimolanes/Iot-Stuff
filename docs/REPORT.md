@@ -18,8 +18,8 @@ integrating hardware, software, and networking components to create a flexible
 and deployable solution for `Weather Monitoring`.
 
 The core components of the system include an ESP32 microcontroller,
-temperature and humidity sensors (DHT22/DHT11), RFIC RC522 sensor,
-an MQTT broker server, and a self-made web API.
+temperature and humidity sensors (DHT11), RFID RC522 sensor,
+an MQTT broker server and a self-made web API.
 These elements work in concert to collect real-time environmental data,
 analyze it, and make it visible to end users via a
 visualization of the measurements using Grafana.
@@ -98,6 +98,8 @@ The firmware for the ESP32 is written in C++ (_Arduino_) and is responsible
 for reading data from the DHT11 sensor and publishing it to the MQTT broker.
 The firmware also includes code for handling RFID authentication.
 
+![Weather Station Hardware](./docs/images/weather-station-hardware.jpeg)
+
 ### MQTT Broker
 
 **MQTT** (_Message Queeting Telemetry Transport_) is a lightweight messaging protocol
@@ -163,6 +165,8 @@ from the server.
 and observability. It allows you to query, visualize, alert on, and understand
 your metrics no matter where they are stored. In this project, Grafana is used
 to visualize the weather data stored in the InfluxDB database.
+
+![Grafana Visualization Example](./docs/images/grafana-example.jpeg)
 
 ### Docker
 
